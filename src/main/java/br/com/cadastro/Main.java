@@ -2,6 +2,7 @@ package br.com.cadastro;
 
 import br.com.cadastro.model.Categoria;
 import br.com.cadastro.model.Produto;
+import br.com.cadastro.repository.CategoriaCollectionRepository;
 import com.sun.source.doctree.SystemPropertyTree;
 
 import java.math.BigDecimal;
@@ -15,17 +16,11 @@ public class Main {
         Categoria categoria =  new Categoria();
         categoria.setId(1L).setNome("Eletronicos");
 
-        Produto produto = new Produto();
-        produto.setId(1L)
-                .setNome("Kindle")
-                .setDescricao("e-reader")
-                .setCategoria(categoria)
-                .setDataDeCadastro(LocalDateTime.now())
-                .setPreco(BigDecimal.valueOf(800));
+        Categoria categoriaSalva = CategoriaCollectionRepository.save(categoria);
+
 
         System.out.println("Categoria:" + categoria);
 
-        System.out.println("Produto:" + produto);
 
 
     }
