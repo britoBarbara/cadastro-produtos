@@ -9,6 +9,9 @@ import br.com.cadastro.view.Opcao;
 import br.com.cadastro.view.OpcaoView;
 import br.com.cadastro.view.ProdutoView;
 
+import javax.swing.*;
+import java.util.List;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
@@ -28,7 +31,7 @@ public class Main {
             }
 
 
-        } while (opcao != Opcao.ENCERRAR_PROGRAMA);
+        } while (true);
     }
 
     private static void encerrarPrograma() {
@@ -36,13 +39,26 @@ public class Main {
     }
 
     private static void consultarProdutoPorCategoria() {
+        Categoria categoria = CategoriaView.select(null);
 
+        List<Produto> produtos = ProdutoCollectionRepository.findByCategoria(categoria);
+
+        if (produtos.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Não existem produtos cadastrados para a categoria " + categoria.getNome());
+        } else {
+            for (Produto produto : produtos) {
+                ProdutoView.show(produto);
+            }
+            produtos.forEach(System.out::println);
+        }
     }
 
     private static void consultarProdutoPorId() {
     }
 
     private static void alterarProduto() {
+        Produto produto = ProdutoView.select(null);
+        ProdutoView.update(produto);
     }
 
     private static void cadastrarProduto() {

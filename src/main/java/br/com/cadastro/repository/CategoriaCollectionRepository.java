@@ -1,6 +1,7 @@
 package br.com.cadastro.repository;
 
 import br.com.cadastro.model.Categoria;
+import br.com.cadastro.model.Produto;
 
 import javax.swing.*;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.Vector;
 
 public class CategoriaCollectionRepository {
 
-   private static List<Categoria> categorias;
+    private static List<Categoria> categorias;
 
     static {
 
@@ -16,7 +17,7 @@ public class CategoriaCollectionRepository {
 
         Categoria eletronicos = new Categoria(1L, "Eletronicos");
         Categoria celulares = new Categoria(2L, "Celulares");
-        Categoria livros = new Categoria(3L,"Livros");
+        Categoria livros = new Categoria(3L, "Livros");
 
         categorias.add(eletronicos);
         categorias.add(celulares);
@@ -24,22 +25,22 @@ public class CategoriaCollectionRepository {
 
     }
 
-    public static List<Categoria>findAll(){
+    public static List<Categoria> findAll() {
         return categorias;
     }
 
-    public static Categoria findById(Long id){
+    public static Categoria findById(Long id) {
         return categorias.stream()
-                .filter(c-> c.getId().equals(id))
+                .filter(c -> c.getId().equals(id))
                 .findFirst()
                 .orElse(null);
 
     }
 
-    public static List<Categoria> findByNome(String nome){
+    public static List<Categoria> findByNome(String nome) {
 
         return categorias.stream()
-                .filter(c-> c.getNome().equalsIgnoreCase(nome))
+                .filter(c -> c.getNome().equalsIgnoreCase(nome))
                 .toList();
     }
 

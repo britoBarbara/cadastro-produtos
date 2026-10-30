@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import static java.lang.String.format;
+
 public class ProdutoView {
 
     public static Produto form(Produto produto) {
@@ -59,7 +61,7 @@ public class ProdutoView {
     }
 
     public static void sucesso(Produto produto) {
-        JOptionPane.showMessageDialog(null, "Produto " + produto.getNome().toUpperCase() + " salva com sucesso!");
+        JOptionPane.showMessageDialog(null, "Produto " + produto.getNome().toUpperCase() + " salvo com sucesso!");
 
     }
 
@@ -81,15 +83,15 @@ public class ProdutoView {
         show(produto);
     }
 
-    private static void show(Produto produto) {
-        System.out.println(produto);
+    public static void show(Produto p) {
+        System.out.println(p);
 
-        String textoFormatado = String.format("PRODUTO: " + produto.getNome() + System.lineSeparator() +
-                "DESCRIÇÃO: " + produto.getDescricao() + System.lineSeparator() +
-                "PREÇO: %,.2f" + produto.getPreco() + System.lineSeparator() +
-                "DATA DE CADASTRO: " + produto.getDataDeCadastro() + System.lineSeparator() +
-                "CATEGORIA: " + produto.getCategoria().getNome());
-        JOptionPane.showMessageDialog(null, textoFormatado);
+        String produtoString = format("PRODUTO: " + p.getNome() + System.lineSeparator() +
+                "DESCRIÇÃO: " + p.getDescricao() + System.lineSeparator() +
+                "PREÇO: '%,.2f'" + p.getPreco() + System.lineSeparator() +
+                "DATA DE CADASTRO: " + p.getDataDeCadastro() + System.lineSeparator() +
+                "CATEGORIA: " + p.getCategoria().getNome());
+        JOptionPane.showMessageDialog(null, produtoString);
     }
 
 }

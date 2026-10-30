@@ -4,7 +4,7 @@ import javax.swing.*;
 
 public class OpcaoView {
 
-    public static Opcao select(){
+    public static Opcao select() {
 
         Opcao ret = (Opcao) JOptionPane.showInputDialog(
                 null,
