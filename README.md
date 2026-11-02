@@ -92,8 +92,6 @@ mvn exec:java -Dexec.mainClass="br.com.cadastro.Main"
 
 ## 🗺️ Roadmap de Melhorias
 
-- [ ] Implementar o método `consultarProdutoPorId()` na classe `Main`.
-- [ ] Adicionar funcionalidade de exclusão (remover produto/categoria).
 - [ ] Migrar a persistência em memória para banco de dados relacional (H2, PostgreSQL ou MySQL) via JDBC ou JPA/Hibernate.
 - [ ] Adicionar testes unitários com JUnit 5.
 
