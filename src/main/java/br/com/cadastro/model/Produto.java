@@ -13,7 +13,6 @@ public class Produto {
     private LocalDateTime dataDeCadastro;
     private Categoria categoria;
 
-
     public Produto() {
     }
 
@@ -103,10 +102,6 @@ public class Produto {
 
     @Override
     public String toString() {
-        return nome.toUpperCase();
-    }
-
-    public void setPreco(int bigDecimal) {
+        return nome != null ? nome.toUpperCase() : "";
     }
 }
-

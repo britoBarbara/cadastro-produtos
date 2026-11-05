@@ -52,6 +52,6 @@ public class Categoria {
 
     @Override
     public String toString() {
-        return nome.toUpperCase();
+        return nome != null ? nome.toUpperCase() : "";
     }
 }

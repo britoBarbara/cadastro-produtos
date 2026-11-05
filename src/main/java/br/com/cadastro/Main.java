@@ -12,67 +12,97 @@ import br.com.cadastro.view.ProdutoView;
 import javax.swing.*;
 import java.util.List;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import static br.com.cadastro.repository.ProdutoCollectionRepository.findByCategoria;
+
 public class Main {
     public static void main(String[] args) {
 
-        Opcao opcao = null;
+        Opcao opcao;
 
         do {
             opcao = OpcaoView.select();
+            if (opcao == null || opcao == Opcao.ENCERRAR_PROGRAMA) {
+                break;
+            }
             switch (opcao) {
                 case CADASTRAR_CATEGORIA -> cadastrarCategoria();
                 case CADASTRAR_PRODUTO -> cadastrarProduto();
                 case ALTERAR_PRODUTO -> alterarProduto();
                 case CONSULTAR_PRODUTO_POR_ID -> consultarProdutoPorId();
                 case CONSULTAR_PRODUTO_POR_CATEGORIA -> consultarProdutoPorCategoria();
-                case ENCERRAR_PROGRAMA -> encerrarPrograma();
+                case ENCERRAR_PROGRAMA -> {}
             }
 
-
-        } while (true);
-    }
-
-    private static void encerrarPrograma() {
-        System.exit(0);
+        } while (opcao != Opcao.ENCERRAR_PROGRAMA);
     }
 
     private static void consultarProdutoPorCategoria() {
         Categoria categoria = CategoriaView.select(null);
+        if (categoria == null) {
+            return;
+        }
 
-        List<Produto> produtos = ProdutoCollectionRepository.findByCategoria(categoria);
+        List<Produto> produtos = findByCategoria(categoria);
 
         if (produtos.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Não existem produtos cadastrados para a categoria " + categoria.getNome());
+            JOptionPane.showMessageDialog(null, "Nenhum produto encontrado para a categoria " + categoria.getNome());
         } else {
-            for (Produto produto : produtos) {
-                ProdutoView.show(produto);
-            }
-            produtos.forEach(System.out::println);
+            produtos.forEach(ProdutoView::show);
         }
     }
 
     private static void consultarProdutoPorId() {
+        String input = JOptionPane.showInputDialog(null, "Informe o ID do Produto");
+        if (input == null || input.trim().isEmpty()) {
+            return;
+        }
+
+        try {
+            Long id = Long.parseLong(input.trim());
+            if (id <= 0) {
+                JOptionPane.showMessageDialog(null, "ID inválido! Deve ser maior que zero.", "Erro", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            Produto p = ProdutoCollectionRepository.findById(id);
+            if (p != null) {
+                ProdutoView.show(p);
+            } else {
+                JOptionPane.showMessageDialog(null, "Produto não encontrado!", "Aviso", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "ID inválido!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private static void alterarProduto() {
         Produto produto = ProdutoView.select(null);
-        ProdutoView.update(produto);
+        if (produto != null) {
+            ProdutoView.update(produto);
+        }
     }
 
     private static void cadastrarProduto() {
         Produto produto = ProdutoView.form(new Produto());
-        ProdutoCollectionRepository.save(produto);
-        ProdutoView.sucesso(produto);
+        if (produto == null) {
+            return;
+        }
+        Produto salvo = ProdutoCollectionRepository.save(produto);
+        if (salvo != null) {
+            ProdutoView.sucesso(salvo);
+        }
     }
 
     private static void cadastrarCategoria() {
-
-        CategoriaView view = new CategoriaView();
-        Categoria categoria = view.form(new Categoria());
-        CategoriaCollectionRepository.save(categoria);
-        view.sucesso(categoria);
-
+        Categoria categoria = CategoriaView.form(new Categoria());
+        if (categoria == null) {
+            return;
+        }
+        Categoria salva = CategoriaCollectionRepository.save(categoria);
+        if (salva != null) {
+            CategoriaView.sucesso(salva);
+        } else {
+            JOptionPane.showMessageDialog(null, "Categoria já cadastrada!", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }
